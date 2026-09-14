@@ -28,3 +28,12 @@ Homestead.json
 .env.production
 .phpactor.json
 auth.json
+
+# Laravel generated and local-only files
+*.log
+/.phpunit.cache
+/database/*.sqlite*
+
+# One-time local framework bootstrap directories
+/.mizan3g-laravel-bootstrap/
+/.mizan3g-laravel-clean/
