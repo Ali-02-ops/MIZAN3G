@@ -100,7 +100,8 @@ This convention also applies to framework/support tables created for MIZAN3G, fo
 | 4 | Prompt versioning and audit freeze | Day 2 AM | Complete | Frozen audit has immutable snapshots |
 | 5 | Generation records and imported-output workflow | Day 2 PM | Complete | PA/PB/PC full translations are traceable |
 | 6 | Extraction confirmation and researcher review | Day 2 PM | Complete | Confirmed units have submitted ratings |
-| 7 | Scoring, provenance and results | Day 3 AM | Not started | Correct SKB/IKG drill down is available |
+| 7 | Scoring, provenance and results | Day 3 AM | Complete | Correct SKB/IKG drill down is available |
+| 8 | Hardening, acceptance run and handoff | Day 3 PM | Complete | Tests pass and a demo audit completes |
 | 8 | Hardening, acceptance run and handoff | Day 3 PM | Not started | Tests pass and a demo audit completes |
 
 ---
@@ -355,3 +356,13 @@ Complete Phase 2: add Sanctum/API authentication and protected organisation/proj
 
 - Added term-output, rating, drift-type, and rating-drift data structures.
 - Added visible MIZAN3G researcher review, cultural inventory, and authentication UI components.
+
+### 15 September 2026 — Phase 7 complete
+
+- Added tested SKB and IKG calculators, retaining separate fidelity and instability results.
+- Added score snapshots with scope, denominator, missing/imputed counts, calculation metadata, and timestamp provenance.
+
+### 15 September 2026 — Phase 8 complete
+
+- Verified migrations, seeders, Blade UI response, formatter, full test suite, and dependency audit.
+- Added local setup/runbook documentation and ignored generated frontend development artifacts.
