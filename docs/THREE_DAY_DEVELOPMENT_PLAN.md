@@ -97,7 +97,7 @@ This convention also applies to framework/support tables created for MIZAN3G, fo
 | 1 | Foundation and secure application shell | Day 1 AM | Complete | App boots, database/tests/tooling work |
 | 2 | Identity, organisations and projects | Day 1 AM–PM | Complete | Users are isolated to authorised organisations |
 | 3 | Source corpus and cultural inventory | Day 1 PM | Complete | Versioned document and terms can be created |
-| 4 | Prompt versioning and audit freeze | Day 2 AM | Not started | Frozen audit has immutable snapshots |
+| 4 | Prompt versioning and audit freeze | Day 2 AM | Complete | Frozen audit has immutable snapshots |
 | 5 | Generation records and imported-output workflow | Day 2 PM | Not started | PA/PB/PC full translations are traceable |
 | 6 | Extraction confirmation and researcher review | Day 2 PM | Not started | Confirmed units have submitted ratings |
 | 7 | Scoring, provenance and results | Day 3 AM | Not started | Correct SKB/IKG drill down is available |
@@ -340,3 +340,8 @@ Complete Phase 2: add Sanctum/API authentication and protected organisation/proj
 - Seeded all eight Ghazala categories and starter subcategories idempotently.
 - Added protected API routes for creating and viewing documents/versions and listing, creating, and updating cultural terms.
 - Verified the Phase 3 integrity tests, full test suite, formatter, and dependency audit before the phase commit.
+
+### 14 September 2026 — Phase 4 complete
+
+- Added versioned PA/PB/PC prompt templates, model configurations, and immutable audit snapshot records.
+- Implemented atomic audit freeze validation and snapshotting, including required PA/PB/PC prompts, selected terms, project models, prompt locking, and state transition to `READY_TO_GENERATE`.
