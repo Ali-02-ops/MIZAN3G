@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\WorkspaceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,3 +14,8 @@ Route::middleware('guest')->group(function (): void {
 });
 
 Route::post('/logout', [AuthController::class, 'destroy'])->middleware('auth')->name('logout');
+
+Route::get('/{screen}', [WorkspaceController::class, 'show'])
+    ->whereIn('screen', ['projects', 'documents', 'inventory', 'audits', 'results', 'settings'])
+    ->middleware('auth')
+    ->name('workspace.screen');
