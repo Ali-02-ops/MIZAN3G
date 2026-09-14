@@ -99,7 +99,7 @@ This convention also applies to framework/support tables created for MIZAN3G, fo
 | 3 | Source corpus and cultural inventory | Day 1 PM | Complete | Versioned document and terms can be created |
 | 4 | Prompt versioning and audit freeze | Day 2 AM | Complete | Frozen audit has immutable snapshots |
 | 5 | Generation records and imported-output workflow | Day 2 PM | Complete | PA/PB/PC full translations are traceable |
-| 6 | Extraction confirmation and researcher review | Day 2 PM | Not started | Confirmed units have submitted ratings |
+| 6 | Extraction confirmation and researcher review | Day 2 PM | Complete | Confirmed units have submitted ratings |
 | 7 | Scoring, provenance and results | Day 3 AM | Not started | Correct SKB/IKG drill down is available |
 | 8 | Hardening, acceptance run and handoff | Day 3 PM | Not started | Tests pass and a demo audit completes |
 
@@ -350,3 +350,8 @@ Complete Phase 2: add Sanctum/API authentication and protected organisation/proj
 
 - Added full-text generation provenance and protected imported-output workflow.
 - Import preserves raw response and parsed translation separately, snapshots frozen source/prompt content, and creates a new attempt rather than overwriting historical output.
+
+### 15 September 2026 — Phase 6 complete
+
+- Added term-output, rating, drift-type, and rating-drift data structures.
+- Added visible MIZAN3G researcher review, cultural inventory, and authentication UI components.
