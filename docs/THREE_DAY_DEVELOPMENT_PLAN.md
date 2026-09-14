@@ -95,8 +95,8 @@ This convention also applies to framework/support tables created for MIZAN3G, fo
 | # | Phase | Target day | Status | Exit criterion |
 |---|---|---:|---|---|
 | 1 | Foundation and secure application shell | Day 1 AM | Complete | App boots, database/tests/tooling work |
-| 2 | Identity, organisations and projects | Day 1 AM–PM | In progress | Users are isolated to authorised organisations |
-| 3 | Source corpus and cultural inventory | Day 1 PM | Not started | Versioned document and terms can be created |
+| 2 | Identity, organisations and projects | Day 1 AM–PM | Complete | Users are isolated to authorised organisations |
+| 3 | Source corpus and cultural inventory | Day 1 PM | Complete | Versioned document and terms can be created |
 | 4 | Prompt versioning and audit freeze | Day 2 AM | Not started | Frozen audit has immutable snapshots |
 | 5 | Generation records and imported-output workflow | Day 2 PM | Not started | PA/PB/PC full translations are traceable |
 | 6 | Extraction confirmation and researcher review | Day 2 PM | Not started | Confirmed units have submitted ratings |
@@ -309,6 +309,16 @@ At the end of each day:
 4. Move incomplete optional work out of the critical path before starting new features.
 5. Record a concise blocker/decision under the relevant phase.
 
+## Phase completion gate
+
+Every phase must complete the following sequence before work begins on the next phase:
+
+1. Meet the phase exit criterion and run the relevant tests, formatter, and security checks.
+2. Update this tracker with the completed status and any material implementation decision.
+3. Create a focused Git commit for the completed phase.
+4. Push that commit to `origin/main` and verify the working tree is clean.
+5. Start the following phase.
+
 ## Immediate next action
 
 Complete Phase 2: add Sanctum/API authentication and protected organisation/project endpoints to the tested multi-tenant schema.
@@ -322,3 +332,11 @@ Complete Phase 2: add Sanctum/API authentication and protected organisation/proj
 - The migration ledger and all current Laravel support/domain tables use the `mizan3g_` prefix.
 - Applied and tested: users, organisations, membership roles, projects, audit-log base table, role-aware organisation/project policies, and cross-organisation isolation tests.
 - Environment note: Docker Desktop was not running, so PostgreSQL integration is deferred; the schema is written using portable Laravel migration primitives.
+
+### 14 September 2026 — Phase 3 complete
+
+- Added prefixed source-document, source-document-version, cultural-category, cultural-subcategory, and cultural-term tables and explicit model mappings.
+- Added `DocumentVersionService`, which creates append-only, SHA-256-hashed source versions and advances the document's current-version pointer without altering historical text.
+- Seeded all eight Ghazala categories and starter subcategories idempotently.
+- Added protected API routes for creating and viewing documents/versions and listing, creating, and updating cultural terms.
+- Verified the Phase 3 integrity tests, full test suite, formatter, and dependency audit before the phase commit.
