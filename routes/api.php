@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CulturalTermController;
 use App\Http\Controllers\Api\DocumentController;
+use App\Http\Controllers\Api\GenerationController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function (): void {
@@ -21,5 +22,6 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/document-versions/{version}/cultural-terms', [CulturalTermController::class, 'index']);
         Route::post('/document-versions/{version}/cultural-terms', [CulturalTermController::class, 'store']);
         Route::patch('/cultural-terms/{term}', [CulturalTermController::class, 'update']);
+        Route::post('/audits/{audit}/generations/import', [GenerationController::class, 'import']);
     });
 });

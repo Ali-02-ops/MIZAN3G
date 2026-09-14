@@ -98,7 +98,7 @@ This convention also applies to framework/support tables created for MIZAN3G, fo
 | 2 | Identity, organisations and projects | Day 1 AM–PM | Complete | Users are isolated to authorised organisations |
 | 3 | Source corpus and cultural inventory | Day 1 PM | Complete | Versioned document and terms can be created |
 | 4 | Prompt versioning and audit freeze | Day 2 AM | Complete | Frozen audit has immutable snapshots |
-| 5 | Generation records and imported-output workflow | Day 2 PM | Not started | PA/PB/PC full translations are traceable |
+| 5 | Generation records and imported-output workflow | Day 2 PM | Complete | PA/PB/PC full translations are traceable |
 | 6 | Extraction confirmation and researcher review | Day 2 PM | Not started | Confirmed units have submitted ratings |
 | 7 | Scoring, provenance and results | Day 3 AM | Not started | Correct SKB/IKG drill down is available |
 | 8 | Hardening, acceptance run and handoff | Day 3 PM | Not started | Tests pass and a demo audit completes |
@@ -345,3 +345,8 @@ Complete Phase 2: add Sanctum/API authentication and protected organisation/proj
 
 - Added versioned PA/PB/PC prompt templates, model configurations, and immutable audit snapshot records.
 - Implemented atomic audit freeze validation and snapshotting, including required PA/PB/PC prompts, selected terms, project models, prompt locking, and state transition to `READY_TO_GENERATE`.
+
+### 15 September 2026 — Phase 5 complete
+
+- Added full-text generation provenance and protected imported-output workflow.
+- Import preserves raw response and parsed translation separately, snapshots frozen source/prompt content, and creates a new attempt rather than overwriting historical output.
