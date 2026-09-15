@@ -6,7 +6,15 @@
     @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 <body class="mizan-shell">
-<main class="mizan-main workstation-page" data-translation-workstation>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<div class="mizan-layout">
+    <aside class="mizan-sidebar" aria-label="Primary navigation">
+        <div class="brand"><div class="brand-mark" aria-hidden="true">M</div><div><strong>MIZAN3G</strong><span>Cultural Translation Audit</span></div></div>
+        <nav class="side-nav"><a class="nav-item" href="{{ route('dashboard') }}#projects">Projects</a><a class="nav-item" href="{{ route('dashboard') }}#documents">Documents</a><a class="nav-item" href="{{ route('dashboard') }}#inventory">Cultural inventory</a><a class="nav-item active" href="{{ route('workspace.screen', 'workstation') }}">Workstation</a><a class="nav-item" href="{{ route('workspace.screen', 'audits') }}">Audit runs</a><a class="nav-item" href="{{ route('workspace.screen', 'expert-reviews') }}">Expert reviews</a><a class="nav-item" href="{{ route('workspace.screen', 'results') }}">Results</a><a class="nav-item" href="{{ route('workspace.screen', 'reports') }}">Reports</a><a class="nav-item" href="{{ route('workspace.screen', 'settings') }}">Settings</a></nav>
+        <div class="sidebar-note"><span class="note-dot"></span><div><strong>Research mode</strong><small>Provenance required</small></div></div>
+        <div class="sidebar-user"><div class="avatar" data-user-initial>?</div><div><strong data-user-name>Loading…</strong><span>Research workspace</span></div><form method="POST" action="{{ route('logout') }}">@csrf <button type="submit" aria-label="Sign out">Sign out</button></form></div>
+    </aside>
+<main id="main-content" class="mizan-main workstation-page" data-translation-workstation>
     <header class="topbar"><div class="breadcrumb"><a href="{{ route('dashboard') }}">Workspace</a><b>/</b><strong>Workstation</strong></div></header>
     <section class="workstation-intro">
         <div><p class="eyebrow">Translation workspace</p><h1>Read the cultural <em>context.</em></h1><p>Enter source text on the left. The right panel will show an analysed translation and cultural terms requiring researcher review.</p></div>
@@ -23,5 +31,6 @@
     </section>
     <section class="workstation-guidance"><article><span>01</span><div><h2>Write or paste</h2><p>Draft your source sentence without creating a permanent document first.</p></div></article><article><span>02</span><div><h2>Review proposals</h2><p>Inspect the translation and each AI-proposed cultural term.</p></div></article><article><span>03</span><div><h2>Save to audit</h2><p>Later, attach the reviewed result to a versioned project document.</p></div></article></section>
 </main>
+</div>
 </body>
 </html>
