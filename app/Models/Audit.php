@@ -22,6 +22,11 @@ class Audit extends Model
         return $this->belongsTo(Project::class);
     }
 
+    public function documentVersion(): BelongsTo
+    {
+        return $this->belongsTo(SourceDocumentVersion::class);
+    }
+
     public function terms(): HasMany
     {
         return $this->hasMany(AuditTerm::class);
@@ -35,5 +40,15 @@ class Audit extends Model
     public function models(): HasMany
     {
         return $this->hasMany(AuditModel::class);
+    }
+
+    public function generations(): HasMany
+    {
+        return $this->hasMany(Generation::class);
+    }
+
+    public function expertAssignments(): HasMany
+    {
+        return $this->hasMany(ExpertAssignment::class);
     }
 }

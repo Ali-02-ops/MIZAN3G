@@ -56,6 +56,10 @@ class AuthController extends Controller
             'id' => $user->getKey(),
             'name' => $user->name,
             'email' => $user->email,
+            'organisations' => $user->organisations()
+                ->select('mizan3g_organisations.id', 'mizan3g_organisations.name')
+                ->orderBy('mizan3g_organisations.name')
+                ->get(),
         ]);
     }
 }

@@ -12,6 +12,16 @@ use Illuminate\Http\Request;
 
 class DocumentController extends Controller
 {
+    public function index(Project $project): JsonResponse
+    {
+        $this->authorize('view', $project);
+
+        return response()->json($project->documents()
+            ->with('versions')
+            ->latest()
+            ->get());
+    }
+
     public function store(Request $request, Project $project, DocumentVersionService $service): JsonResponse
     {
         $this->authorize('create', [SourceDocument::class, $project]);

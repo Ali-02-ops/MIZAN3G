@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PromptVersion extends Model
 {
@@ -13,5 +14,10 @@ class PromptVersion extends Model
     protected function casts(): array
     {
         return ['locked_at' => 'datetime'];
+    }
+
+    public function template(): BelongsTo
+    {
+        return $this->belongsTo(PromptTemplate::class, 'prompt_template_id');
     }
 }

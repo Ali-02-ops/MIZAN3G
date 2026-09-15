@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\CulturalTerm;
 use App\Models\SourceDocumentVersion;
+use App\Services\Audits\AuditLogService;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -19,20 +20,23 @@ class CulturalTermController extends Controller
         return response()->json($version->terms()->with(['category', 'subcategory'])->get());
     }
 
-    public function store(Request $request, SourceDocumentVersion $version): JsonResponse
+    public function store(Request $request, SourceDocumentVersion $version, AuditLogService $logs): JsonResponse
     {
         $this->authorize('update', $version->document->project);
 
         $term = $version->terms()->create($this->validatedAttributes($request) + ['created_by' => $request->user()->getKey()]);
+        $logs->record($request->user(), $version->document->project, 'term.created', $term, new: ['category_id' => $term->category_id, 'selected_for_audit' => $term->selected_for_audit], request: $request);
 
         return response()->json($term->load(['category', 'subcategory']), 201);
     }
 
-    public function update(Request $request, CulturalTerm $term): JsonResponse
+    public function update(Request $request, CulturalTerm $term, AuditLogService $logs): JsonResponse
     {
         $this->authorize('update', $term->documentVersion->document->project);
 
+        $old = $term->only(['category_id', 'subcategory_id', 'selected_for_audit']);
         $term->update($this->validatedAttributes($request, false));
+        $logs->record($request->user(), $term->documentVersion->document->project, 'term.updated', $term, old: $old, new: $term->only(['category_id', 'subcategory_id', 'selected_for_audit']), request: $request);
 
         return response()->json($term->fresh()->load(['category', 'subcategory']));
     }

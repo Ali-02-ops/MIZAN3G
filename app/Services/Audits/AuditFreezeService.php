@@ -34,7 +34,7 @@ class AuditFreezeService
             }
             foreach ($models as $model) {
                 abort_unless($model->project_id === $audit->project_id, 422, 'Models must belong to the audit project.');
-                $audit->models()->create(['ai_model_configuration_id' => $model->id, 'model_name_snapshot' => $model->display_name, 'provider_snapshot' => $model->provider, 'parameters_snapshot_json' => ['temperature' => $model->temperature, 'top_p' => $model->top_p, 'max_tokens' => $model->max_tokens, 'seed' => $model->seed, 'parameters' => $model->parameters_json]]);
+                $audit->models()->create(['ai_model_configuration_id' => $model->id, 'model_name_snapshot' => $model->display_name, 'provider_model_id_snapshot' => $model->provider_model_id, 'provider_snapshot' => $model->provider, 'parameters_snapshot_json' => ['temperature' => $model->temperature, 'top_p' => $model->top_p, 'max_tokens' => $model->max_tokens, 'seed' => $model->seed, 'parameters' => $model->parameters_json]]);
             }
             $audit->update(['status' => 'READY_TO_GENERATE', 'frozen_at' => now()]);
 

@@ -29,7 +29,7 @@ class SourceDocumentPolicy
      */
     public function create(User $user, Project $project): bool
     {
-        return $user->can('create', [Project::class, $project]);
+        return $user->can('update', $project);
     }
 
     /**

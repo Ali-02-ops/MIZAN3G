@@ -16,6 +16,6 @@ Route::middleware('guest')->group(function (): void {
 Route::post('/logout', [AuthController::class, 'destroy'])->middleware('auth')->name('logout');
 
 Route::get('/{screen}', [WorkspaceController::class, 'show'])
-    ->whereIn('screen', ['projects', 'documents', 'inventory', 'audits', 'results', 'settings'])
+    ->whereIn('screen', ['projects', 'documents', 'inventory', 'workstation', 'audits', 'expert-reviews', 'results', 'reports', 'settings'])
     ->middleware('auth')
     ->name('workspace.screen');

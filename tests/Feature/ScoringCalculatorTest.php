@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Domain\Scoring\IKGCalculator;
+use App\Domain\Scoring\RatingResolver;
 use App\Domain\Scoring\SKBCalculator;
 use Tests\TestCase;
 
@@ -31,5 +32,13 @@ class ScoringCalculatorTest extends TestCase
         $this->assertSame(1, $result['unstable_terms']);
         $this->assertSame(3, $result['eligible_terms']);
         $this->assertSame(1, $result['excluded_terms']);
+    }
+
+    public function test_rating_resolution_respects_scoring_mode_and_discloses_imputation(): void
+    {
+        $ratings = collect([(object) ['status' => 'SUBMITTED', 'reviewer_role' => 'RESEARCHER', 'rating_value' => 2, 'submitted_at' => now()]]);
+        $resolver = app(RatingResolver::class);
+        $this->assertNull($resolver->resolve($ratings, 'VERIFIED_ONLY'));
+        $this->assertSame(['value' => 2, 'imputed' => true], $resolver->resolve($ratings, 'MANUSCRIPT_COMPATIBLE'));
     }
 }

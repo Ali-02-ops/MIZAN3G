@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(['organisation_id', 'name', 'slug', 'description', 'objective', 'source_language', 'target_language', 'framework', 'status', 'created_by'])]
 class Project extends Model
@@ -28,5 +29,20 @@ class Project extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function documents(): HasMany
+    {
+        return $this->hasMany(SourceDocument::class);
+    }
+
+    public function audits(): HasMany
+    {
+        return $this->hasMany(Audit::class);
+    }
+
+    public function modelConfigurations(): HasMany
+    {
+        return $this->hasMany(AiModelConfiguration::class);
     }
 }
