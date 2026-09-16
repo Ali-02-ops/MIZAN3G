@@ -15,6 +15,7 @@ class WorkspaceController extends Controller
             'results' => view('workspace.results'),
             'reports' => view('workspace.reports'),
             'workstation' => view('workspace.workstation'),
+            'settings' => view('workspace.settings'),
             default => view('workspace.screen', ['screen' => $screen]),
         };
     }

@@ -11,7 +11,7 @@
 <div class="mizan-layout" data-mizan-workspace>
     <aside class="mizan-sidebar" aria-label="Primary navigation">
         <div class="brand"><div class="brand-mark" aria-hidden="true">M</div><div><strong>MIZAN3G</strong><span>Cultural Translation Audit</span></div></div>
-        <nav class="side-nav"><a class="nav-item active" href="#projects">Projects</a><a class="nav-item" href="#documents">Documents</a><a class="nav-item" href="#inventory">Cultural inventory</a><a class="nav-item" href="{{ route('workspace.screen', 'workstation') }}">Workstation</a><a class="nav-item" href="{{ route('workspace.screen', 'audits') }}">Audit runs</a><a class="nav-item" href="{{ route('workspace.screen', 'expert-reviews') }}">Expert reviews</a><a class="nav-item" href="{{ route('workspace.screen', 'results') }}">Results</a><a class="nav-item" href="{{ route('workspace.screen', 'reports') }}">Reports</a><a class="nav-item" href="{{ route('workspace.screen', 'settings') }}">Settings</a></nav>
+        <nav class="side-nav"><a class="nav-item active" href="{{ route('workspace.screen', 'workstation') }}">Workstation</a><a class="nav-item" href="{{ route('workspace.screen', 'settings') }}">Settings</a></nav>
         <div class="sidebar-note"><span class="note-dot"></span><div><strong>Research mode</strong><small>Provenance required</small></div></div>
         <div class="sidebar-user"><div class="avatar" data-user-initial>?</div><div><strong data-user-name>Loading…</strong><span>Research workspace</span></div><form method="POST" action="{{ route('logout') }}">@csrf <button type="submit" aria-label="Sign out">Sign out</button></form></div>
     </aside>

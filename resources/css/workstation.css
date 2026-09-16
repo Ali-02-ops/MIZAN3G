@@ -2,6 +2,8 @@
     margin: 18px 20px 0;
 }
 
+.live-score-summary{margin:12px 0;padding:10px;border-radius:6px;color:#315548;background:#edf6ef;font-size:12px;font-weight:700}.live-score-table{width:100%;border-collapse:collapse;font-size:11px}.live-score-table th,.live-score-table td{padding:9px;border:1px solid #dfe7e2;text-align:left;vertical-align:top}.live-score-table th{color:#477063;background:#f2f7f3;font-size:10px;letter-spacing:.05em;text-transform:uppercase}.live-score-table td:nth-last-child(-n+3){width:42px;text-align:center;font-weight:700}.live-score-table tr:nth-child(even){background:#fbfdfb}
+
 @media (max-width: 760px) {
     .cultural-points-panel {
         margin: 14px 14px 0;

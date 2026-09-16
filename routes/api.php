@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\TaxonomyController;
 use App\Http\Controllers\Api\TermExtractionController;
 use App\Http\Controllers\Api\TermOutputController;
 use App\Http\Controllers\Api\WorkstationController;
+use App\Http\Controllers\Api\LiveWorkstationScoringController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function (): void {
@@ -40,6 +41,7 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/taxonomy/cultural-categories', [TaxonomyController::class, 'categories']);
         Route::get('/taxonomy/drift-types', [DriftTypeController::class, 'index']);
         Route::get('/prompt-versions', [PromptController::class, 'index']);
+        Route::get('/prompt-versions/catalog', [PromptController::class, 'catalog']);
         Route::get('/audits/{audit}', [AuditController::class, 'show']);
         Route::post('/audits/{audit}/freeze', [AuditController::class, 'freeze']);
         Route::get('/audits/{audit}/generations', [GenerationController::class, 'index']);
@@ -65,6 +67,7 @@ Route::prefix('v1')->group(function (): void {
         Route::post('/document-versions/{version}/cultural-terms', [CulturalTermController::class, 'store']);
         Route::post('/document-versions/{version}/analyze-cultural-terms', [TermExtractionController::class, 'store']);
         Route::post('/workstation/analyze', [WorkstationController::class, 'analyze'])->middleware('throttle:30,1');
+        Route::post('/workstation/score', [LiveWorkstationScoringController::class, 'score'])->middleware('throttle:10,1');
         Route::patch('/cultural-terms/{term}', [CulturalTermController::class, 'update']);
         Route::post('/audits/{audit}/generations/import', [GenerationController::class, 'import']);
     });

@@ -234,7 +234,7 @@ if (translationWorkstation) {
     const analyse = translationWorkstation.querySelector('[data-run-analysis]');
     const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
     const languageName = (select) => select.options[select.selectedIndex].text;
-    const clearOutput = () => { output.textContent = ''; output.hidden = true; outputEmpty.hidden = false; culturalList.replaceChildren(); culturalPoints.hidden = true; };
+    const clearOutput = () => { output.textContent = ''; output.hidden = true; outputEmpty.hidden = false; culturalList.replaceChildren(); culturalPoints.hidden = true; window.dispatchEvent(new Event('mizan3g:analysis-cleared')); };
     const refresh = () => { count.textContent = `${source.value.length.toLocaleString()} / 5,000`; sourceHeading.textContent = languageName(sourceLanguage); targetHeading.textContent = languageName(targetLanguage); if (!source.value.trim()) { outputStatus.textContent = 'Awaiting source text'; clearOutput(); } else { outputStatus.textContent = 'Ready for analysis'; } };
     source.addEventListener('input', refresh); sourceLanguage.addEventListener('change', refresh); targetLanguage.addEventListener('change', refresh);
     translationWorkstation.querySelector('[data-clear-source]').addEventListener('click', () => { source.value = ''; refresh(); source.focus(); });
@@ -256,6 +256,7 @@ if (translationWorkstation) {
             const termsByPhrase = new Map(); results.flatMap((result) => result.terms || []).forEach((term) => termsByPhrase.set(term.source_phrase.toLocaleLowerCase(), term));
             const notices = results.map((result) => result.cultural_notice).filter(Boolean);
             const data = { translation: results.map((result) => result.translation).join(' '), terms: [...termsByPhrase.values()], cultural_notice: notices.length ? `${notices.length} sentence${notices.length === 1 ? '' : 's'} could not produce structured cultural proposals.` : null };
+            window.dispatchEvent(new CustomEvent('mizan3g:analysis-complete', { detail: data }));
             output.textContent = data.translation; output.hidden = false; outputEmpty.hidden = true; culturalList.replaceChildren();
             data.terms.forEach((term) => { const item = document.createElement('article'); const title = document.createElement('strong'); title.textContent = term.translated_phrase; const category = document.createElement('span'); category.textContent = `${term.category_name} · Source: ${term.source_phrase}`; const detail = document.createElement('p'); detail.textContent = term.cultural_significance; item.append(title, category, detail); culturalList.append(item); });
             if (data.cultural_notice) { const notice = document.createElement('p'); notice.className = 'cultural-notice'; notice.textContent = data.cultural_notice; culturalList.append(notice); }
@@ -263,4 +264,38 @@ if (translationWorkstation) {
         } catch (error) { outputStatus.textContent = error.message; } finally { analyse.disabled = false; analyse.innerHTML = 'Analyse cultural context <span>→</span>'; }
     });
     refresh();
+}
+
+const settingsWorkspace = document.querySelector('[data-settings-workspace]');
+if (settingsWorkspace) {
+    const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
+    const projectSelect = settingsWorkspace.querySelector('[data-settings-project]');
+    const form = settingsWorkspace.querySelector('[data-settings-form]');
+    const list = settingsWorkspace.querySelector('[data-settings-list]');
+    const message = settingsWorkspace.querySelector('[data-settings-message]');
+    const api = async (path, options = {}) => {
+        const response = await fetch(`/api/v1${path}`, { credentials: 'same-origin', headers: { Accept: 'application/json', 'X-CSRF-TOKEN': csrf, ...(options.body ? { 'Content-Type': 'application/json' } : {}) }, ...options });
+        const data = response.status === 204 ? null : await response.json();
+        if (!response.ok) throw new Error(data.message || Object.values(data.errors || {}).flat().join(' ') || 'The request could not be completed.');
+        return data;
+    };
+    const say = (text, error = false) => { message.textContent = text; message.hidden = false; message.classList.toggle('is-error', error); };
+    const render = (models) => {
+        list.replaceChildren();
+        if (!models.length) { list.textContent = 'No configurations for this project yet.'; return; }
+        models.forEach((model) => { const row = document.createElement('article'); row.className = 'term-row'; const title = document.createElement('strong'); title.textContent = `${model.display_name} · ${model.provider}`; const details = document.createElement('p'); details.textContent = `Model: ${model.provider_model_id} | Environment: ${model.execution_environment} | Temperature: ${model.temperature ?? 'default'} | Top P: ${model.top_p ?? 'default'} | Max tokens: ${model.max_tokens ?? 'default'} | Seed: ${model.seed ?? 'none'}`; row.append(title, details); if (model.notes) { const notes = document.createElement('small'); notes.textContent = model.notes; row.append(notes); } list.append(row); });
+    };
+    const renderPrompts = (prompts) => {
+        const catalog = settingsWorkspace.querySelector('[data-prompt-catalog]'); catalog.replaceChildren();
+        prompts.forEach((prompt) => { const row = document.createElement('article'); row.className = 'term-row'; const title = document.createElement('strong'); title.textContent = prompt.template.code + ' v' + prompt.version_number + ' — ' + prompt.template.name; const detail = document.createElement('p'); detail.textContent = prompt.prompt_body; const status = document.createElement('small'); status.textContent = prompt.locked_at ? 'Locked ' + new Date(prompt.locked_at).toLocaleString() : 'Active · ' + prompt.template.orientation + ' orientation'; row.append(title, detail, status); catalog.append(row); });
+    };
+    const load = async () => { if (!projectSelect.value) return; render(await api(`/projects/${projectSelect.value}/model-configurations`)); };
+    projectSelect.addEventListener('change', () => load().catch((error) => say(error.message, true)));
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault(); const data = Object.fromEntries(new FormData(form)); const projectId = data.project_id; delete data.project_id;
+        ['temperature', 'top_p', 'max_tokens', 'seed'].forEach((key) => { if (!data[key]) delete data[key]; });
+        try { if (data.parameters_json) data.parameters_json = JSON.parse(data.parameters_json); else delete data.parameters_json; } catch { say('Extra parameters must be valid JSON.', true); return; }
+        try { await api(`/projects/${projectId}/model-configurations`, { method: 'POST', body: JSON.stringify(data) }); form.reset(); projectSelect.value = projectId; say('Model configuration saved. Existing frozen audits are unchanged.'); await load(); } catch (error) { say(error.message, true); }
+    });
+    (async () => { try { const [user, projects, prompts] = await Promise.all([api('/auth/me'), api('/projects'), api('/prompt-versions/catalog')]); const userName = settingsWorkspace.querySelector('[data-settings-user-name]'); const userInitial = settingsWorkspace.querySelector('[data-settings-user-initial]'); if (userName) userName.textContent = user.name; if (userInitial) userInitial.textContent = user.name.slice(0, 1).toUpperCase(); renderPrompts(prompts); projects.forEach((project) => projectSelect.append(new Option(project.name, project.id))); if (projects[0]) { projectSelect.value = projects[0].id; await load(); } } catch (error) { say(error.message, true); } })();
 }

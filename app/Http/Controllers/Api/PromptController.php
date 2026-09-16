@@ -8,6 +8,15 @@ use Illuminate\Http\JsonResponse;
 
 class PromptController extends Controller
 {
+    public function catalog(): JsonResponse
+    {
+        return response()->json(PromptVersion::query()
+            ->with('template:id,code,name,orientation')
+            ->orderBy('prompt_template_id')
+            ->orderByDesc('version_number')
+            ->get());
+    }
+
     public function index(): JsonResponse
     {
         return response()->json(PromptVersion::query()
