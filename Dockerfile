@@ -19,7 +19,7 @@ RUN npm run build
 FROM php:8.3-cli-bookworm
 
 WORKDIR /var/www/html
-RUN apt-get update && apt-get install -y --no-install-recommends libpng-dev libpq-dev libsqlite3-dev libzip-dev \
+RUN apt-get update && apt-get install -y --no-install-recommends libonig-dev libpng-dev libpq-dev libsqlite3-dev libzip-dev \
     && docker-php-ext-install gd mbstring pdo_pgsql pdo_sqlite zip \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=vendor /app ./
