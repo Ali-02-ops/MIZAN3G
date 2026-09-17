@@ -8,7 +8,7 @@ class WorkspaceController extends Controller
 {
     public function show(string $screen)
     {
-        abort_unless(in_array($screen, ['projects', 'documents', 'inventory', 'workstation', 'audits', 'expert-reviews', 'results', 'reports', 'settings'], true), 404);
+        abort_unless(in_array($screen, ['documents', 'inventory', 'workstation', 'audits', 'expert-reviews', 'results', 'reports', 'settings'], true), 404);
 
         return match ($screen) {
             'audits' => view('workspace.audits'),

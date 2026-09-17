@@ -12,6 +12,7 @@ class TranslationProviderFactory
             'OPENAI' => app(OpenAiProvider::class),
             'ANTHROPIC' => app(AnthropicProvider::class),
             'GEMINI' => app(GeminiProvider::class),
+            'DEEPSEEK' => app(DeepSeekProvider::class),
             'OLLAMA' => app(OllamaProvider::class),
             default => throw new InvalidArgumentException("Unsupported automated provider: {$provider}"),
         };

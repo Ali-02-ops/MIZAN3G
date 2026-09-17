@@ -15,6 +15,7 @@ class CulturalTermExtractionService
             'OPENAI' => config('services.mizan3g_extraction.openai_model'),
             'ANTHROPIC' => config('services.mizan3g_extraction.anthropic_model'),
             'GEMINI' => config('services.mizan3g_extraction.gemini_model'),
+            'DEEPSEEK' => config('services.mizan3g_extraction.deepseek_model'),
             'OLLAMA' => config('services.mizan3g_extraction.ollama_model'),
             default => throw new \InvalidArgumentException("Unsupported extraction provider: {$provider}"),
         };

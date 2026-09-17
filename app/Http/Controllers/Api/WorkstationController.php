@@ -16,7 +16,7 @@ class WorkstationController extends Controller
     public function analyze(Request $request, WorkstationAnalysisService $service): JsonResponse
     {
         set_time_limit(180);
-        $data = $request->validate(['source_text' => ['required', 'string', 'max:5000'], 'source_language' => ['required', Rule::in(['ms', 'en', 'id', 'ar'])], 'target_language' => ['required', Rule::in(['ms', 'en', 'id', 'ar']), 'different:source_language'], 'analysis_model' => ['required', Rule::in(['qwen', 'gemini'])]]);
+        $data = $request->validate(['source_text' => ['required', 'string', 'max:5000'], 'source_language' => ['required', Rule::in(['ms', 'en', 'id', 'ar'])], 'target_language' => ['required', Rule::in(['ms', 'en', 'id', 'ar']), 'different:source_language'], 'analysis_model' => ['required', Rule::in(['qwen', 'gemini', 'deepseek'])]]);
         try { return response()->json($service->analyze($data['source_text'], $data['source_language'], $data['target_language'], $data['analysis_model'])); }
         catch (RequestException $exception) {
             $status = $exception->response->status();
