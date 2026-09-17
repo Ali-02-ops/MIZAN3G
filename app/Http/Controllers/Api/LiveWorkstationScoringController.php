@@ -17,16 +17,14 @@ class LiveWorkstationScoringController extends Controller
             'source_text' => ['required', 'string', 'max:5000'],
             'source_language' => ['required', Rule::in(['ms', 'en', 'id', 'ar'])],
             'target_language' => ['required', Rule::in(['ms', 'en', 'id', 'ar'])],
-            'analysis_model' => ['required', Rule::in(['qwen', 'gemini', 'deepseek'])],
+            'analysis_model' => ['required', Rule::in(['qwen', 'gemini'])],
             'terms' => ['required', 'array', 'min:1', 'max:50'],
             'terms.*.source_phrase' => ['required', 'string', 'max:1000'],
             'terms.*.translated_phrase' => ['required', 'string', 'max:1000'],
         ]);
-        $selection = match ($data['analysis_model']) {
-            'qwen' => ['provider' => 'OLLAMA', 'model' => config('services.mizan3g_extraction.ollama_model')],
-            'gemini' => ['provider' => 'GEMINI', 'model' => config('services.mizan3g_extraction.gemini_model')],
-            'deepseek' => ['provider' => 'DEEPSEEK', 'model' => config('services.mizan3g_extraction.deepseek_model')],
-        };
+        $selection = $data['analysis_model'] === 'qwen'
+            ? ['provider' => 'OLLAMA', 'model' => config('services.mizan3g_extraction.ollama_model')]
+            : ['provider' => 'GEMINI', 'model' => config('services.mizan3g_extraction.gemini_model')];
         $client = $providers->make($selection['provider']);
         $targetLanguage = ['ar' => 'Arabic', 'ms' => 'Malay', 'en' => 'English', 'id' => 'Indonesian'][$data['target_language']];
         $procedures = [

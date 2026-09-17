@@ -16,7 +16,6 @@ class WorkstationAnalysisService
         $selection = match ($analysisModel) {
             'qwen' => ['provider' => 'OLLAMA', 'model' => config('services.mizan3g_extraction.ollama_model')],
             'gemini' => ['provider' => 'GEMINI', 'model' => config('services.mizan3g_extraction.gemini_model')],
-            'deepseek' => ['provider' => 'DEEPSEEK', 'model' => config('services.mizan3g_extraction.deepseek_model')],
             default => throw new UnexpectedValueException('Unsupported analysis model.'),
         };
         $client = app(TranslationProviderFactory::class)->make($selection['provider']);

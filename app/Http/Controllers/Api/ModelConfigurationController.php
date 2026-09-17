@@ -21,7 +21,7 @@ class ModelConfigurationController extends Controller
     {
         $this->authorize('update', $project);
         $data = $request->validate([
-            'provider' => ['required', Rule::in(['OPENAI', 'ANTHROPIC', 'GEMINI', 'DEEPSEEK', 'OLLAMA', 'MANUAL_IMPORT'])],
+            'provider' => ['required', Rule::in(['OPENAI', 'ANTHROPIC', 'GEMINI', 'OLLAMA', 'MANUAL_IMPORT'])],
             'display_name' => ['required', 'string', 'max:255'],
             'provider_model_id' => ['required', 'string', 'max:255'],
             'execution_environment' => ['required', 'string', 'max:255'],
